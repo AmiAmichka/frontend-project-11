@@ -23,12 +23,12 @@ export const getState = () => state
 
 export const getPosts = () => state.data.posts;
 
-export const setPosts = (posts) => {
+export const addPosts = (posts) => {
   state.data.posts.push(...posts);
 }
 
-export const getFeeds = (feed) => tate.data.feeds;
+export const getFeeds = (feed) => state.data.feeds;
 
-export const setFeeds = (feed) => {
+export const addFeed = (feed) => {
   state.data.feeds.push(feed)
 }

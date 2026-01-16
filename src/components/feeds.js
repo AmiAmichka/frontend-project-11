@@ -1,0 +1,30 @@
+import { getFeeds } from "../state.js"
+
+const createFeed = (feed) => {
+  const container = document.createElement('div');
+  const title = document.createElement('p');
+  const description = document.createElement('p');
+
+  container.append(title);
+  container.append(description);
+
+  title.textContent = feed.title;
+  description.textContent = feed.description;
+
+  container.classList.add('d-flex', 'flex-column', 'gap-1')
+  title.classList.add('fw-medium', 'normal', 'm-0', 'lh-1')
+  description.classList.add('fw-normal', 'small', 'text-secondary', 'lh-1', 'mb-0')
+
+  return container
+}
+
+export const createFeeds = () => {
+  const feedsContainer = document.querySelector('#feedsContainer');
+
+  feedsContainer.innerHTML = '';
+
+  getFeeds().forEach((feed) => {
+    const feedElement = createFeed(feed);
+    feedsContainer.append(feedElement);
+  });
+}

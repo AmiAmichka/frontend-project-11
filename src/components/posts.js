@@ -1,7 +1,6 @@
 import { getPosts } from "../state.js"
 
 // создаю посты через createElement, className/ setAttribute
-// const post = document.querySelector('')
 
 const createPost = (post) => {
   const container = document.createElement('div');
@@ -15,25 +14,20 @@ const createPost = (post) => {
   link.setAttribute('href', post.link);
   button.textContent = 'Просмотр'
 
-  container.classList.add('d-flex', 'justify-content-between', 'align-tems-center', 'gap-2')
+  container.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'gap-2')
   link.classList.add('fw-bold')
   button.classList.add('btn', 'btn-outline-primary', 'btn-sm')
 
   return container
 }
 
-export const createPosts = (state) => {
-  const postsContainer = document.querySelector('.col-7 .d-flex.flex-column');
+export const createPosts = () => {
+  const postsContainer = document.querySelector('#postsContainer');
 
-  postsContainer.innerHtml = '';
+  postsContainer.innerHTML = '';
 
   getPosts().forEach((post) => {
     const postElement = createPost(post);
     postsContainer.append(postElement);
   });
-
-
-
-
-
 }

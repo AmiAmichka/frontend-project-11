@@ -1,12 +1,12 @@
+import { createFeeds } from "./src/components/feeds.js";
 import { createPosts } from "./src/components/posts.js";
 import { parse } from "./src/helper/parser.js";
-import { getState, setFeeds, setPosts } from "./src/state.js";
+import { addFeed, addPosts } from "./src/state.js";
 
 const form = document.querySelector('.form');
 
 //validor функция обработчик - обработать что юзер пишет в инпут
 form.addEventListener('submit', (event) => {
-  console.log('kjk')
   event.preventDefault();
 
   //одельными функциями делать эти обработчики а потом тут вызывать
@@ -23,9 +23,10 @@ form.addEventListener('submit', (event) => {
     })
     .then(data => {
       const { feed, posts } = parse(data.contents)
-      setFeeds(feed)
-      setPosts(posts);
+      addFeed(feed)
+      addPosts(posts);
 
       createPosts();
+      createFeeds();
     });
 })
