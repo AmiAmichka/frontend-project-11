@@ -26,8 +26,6 @@ form.addEventListener('submit', (event) => {
       setFeeds(feed)
       setPosts(posts);
 
-      console.log('STATE AFTER SET:', getState());
-      
       createPosts();
     });
 })
