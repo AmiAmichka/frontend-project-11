@@ -1,4 +1,5 @@
 import { getPosts } from "../state.js"
+import { setModal } from "./modal.js";
 
 // создаю посты через createElement, className/ setAttribute
 
@@ -18,7 +19,14 @@ const createPost = (post) => {
   link.classList.add('fw-bold')
   button.classList.add('btn', 'btn-outline-primary', 'btn-sm')
 
-  return container
+  button.dataset.bsToggle = 'modal';
+  button.dataset.bsTarget = '#postModal';
+
+  button.addEventListener('click', () => {
+    setModal(post.title, post.description, post.link)
+  })
+
+  return container;
 }
 
 export const createPosts = () => {
