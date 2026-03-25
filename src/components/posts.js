@@ -1,4 +1,5 @@
 import { addViewedPost, getPosts, isPostViewed } from "../state.js"
+import { t } from "../i18n.js";
 import { setModal } from "./modal.js";
 
 // создаю посты через createElement, className/ setAttribute
@@ -14,7 +15,7 @@ const createPost = (post) => {
   link.textContent = post.title;
   link.setAttribute('href', post.link);
   link.setAttribute('target', '_blank');
-  button.textContent = 'Просмотр'
+  button.textContent = t('ui.preview');
 
   container.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'gap-2')
   if (isPostViewed(post.id)) {

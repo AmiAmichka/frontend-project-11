@@ -1,6 +1,7 @@
 import { createFormMessage } from '../components/formMessage';
 import { createPosts } from '../components/posts';
 import { createFeeds } from '../components/feeds';
+import { t } from '../i18n';
 import { addFeed, addLink, addPosts } from '../state';
 import { parse } from '../helper/parser';
 
@@ -9,7 +10,7 @@ const baseFetch = (url) => {
     `https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}&disableCache=true`,
   ).then((response) => {
     if (response.ok) return response.json();
-    throw new Error('Ошибка сети');
+    throw new Error('errors.network');
   });
 };
 
@@ -17,7 +18,7 @@ export const makeFetch = (url) => {
   baseFetch(url)
     .then((data) => {
       if (!data.status.content_type.includes('application/rss+xml')) {
-        throw new Error('Ресурс не содержит валидный RSS');
+        throw new Error('errors.invalidRss');
       }
 
       const { feed, posts } = parse(data.contents);
@@ -25,12 +26,12 @@ export const makeFetch = (url) => {
       addPosts(posts);
       addLink(url);
 
-      createFormMessage('RSS успешно загружен', 'success');
+      createFormMessage(t('success.rssLoaded'), 'success');
       createPosts();
       createFeeds();
     })
     .catch((error) => {
-      createFormMessage(error.message, 'error');
+      createFormMessage(t(error.message), 'error');
     });
 };
 
