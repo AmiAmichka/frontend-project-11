@@ -22,7 +22,7 @@ export const getState = () => state;
 
 export const addPosts = (currentState, posts) => {
   posts.forEach((post) => {
-    if (!currentState.data.posts.find(({ id }) => post.id === id)) {
+    if (!currentState.data.posts.some(({ id }) => post.id === id)) {
       currentState.data.posts.push(post);
     }
   });
