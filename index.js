@@ -8,6 +8,24 @@ import { t } from './src/i18n.js';
 import { getLinks } from './src/state.js';
 
 const form = document.querySelector('.form');
+const input = form.querySelector('#url');
+const submitButton = form.querySelector('[type="submit"]');
+
+const setFormDisabled = (disabled) => {
+  input.disabled = disabled;
+  submitButton.disabled = disabled;
+};
+
+const showFormError = (message) => {
+  input.classList.add('is-invalid');
+  createFormMessage(message, 'error');
+};
+
+const resetFormState = () => {
+  input.classList.remove('is-invalid');
+  form.reset();
+  input.focus();
+};
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
@@ -21,10 +39,17 @@ form.addEventListener('submit', (event) => {
       if (getLinks().includes(formData.url)) {
         throw new Error('errors.alreadyExists');
       }
-      makeFetch(formData.url);
+      setFormDisabled(true);
+
+      makeFetch(formData.url).then(() => {
+        resetFormState();
+      });
     })
     .catch((error) => {
-      createFormMessage(t(error.message), 'error');
+      showFormError(t(error.message));
+    })
+    .finally(() => {
+      setFormDisabled(false);
     });
 });
 

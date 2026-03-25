@@ -15,7 +15,7 @@ const baseFetch = (url) => {
 };
 
 export const makeFetch = (url) => {
-  baseFetch(url)
+  return baseFetch(url)
     .then((data) => {
       if (!data.status.content_type.includes('application/rss+xml')) {
         throw new Error('errors.invalidRss');
@@ -32,6 +32,7 @@ export const makeFetch = (url) => {
     })
     .catch((error) => {
       createFormMessage(t(error.message), 'error');
+      throw error;
     });
 };
 
