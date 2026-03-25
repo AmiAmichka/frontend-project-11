@@ -1,7 +1,3 @@
-import { createFormMessage } from '../components/formMessage';
-import { createPosts } from '../components/posts';
-import { createFeeds } from '../components/feeds';
-import { t } from '../i18n';
 import { addFeed, addLink, addPosts } from '../state';
 import { parse } from '../helper/parser';
 
@@ -14,7 +10,7 @@ const baseFetch = (url) => {
   });
 };
 
-export const makeFetch = (url) => {
+export const makeFetch = (state, url) => {
   return baseFetch(url)
     .then((data) => {
       if (!data.status.content_type.includes('application/rss+xml')) {
@@ -22,24 +18,15 @@ export const makeFetch = (url) => {
       }
 
       const { feed, posts } = parse(data.contents);
-      addFeed(feed);
-      addPosts(posts);
-      addLink(url);
-
-      createFormMessage(t('success.rssLoaded'), 'success');
-      createPosts();
-      createFeeds();
-    })
-    .catch((error) => {
-      createFormMessage(t(error.message), 'error');
-      throw error;
+      addFeed(state, feed);
+      addPosts(state, posts);
+      addLink(state, url);
     });
 };
 
-export const updateFetch = (url) => {
-  baseFetch(url).then((data) => {
+export const updateFetch = (state, url) => {
+  return baseFetch(url).then((data) => {
     const { posts } = parse(data.contents);
-    addPosts(posts);
-    createPosts();
+    addPosts(state, posts);
   });
 };

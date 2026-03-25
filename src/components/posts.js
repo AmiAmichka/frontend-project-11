@@ -1,10 +1,10 @@
-import { addViewedPost, getPosts, isPostViewed } from "../state.js"
+import { addViewedPost, isPostViewed } from "../state.js"
 import { t } from "../i18n.js";
 import { setModal } from "./modal.js";
 
 // создаю посты через createElement, className/ setAttribute
 
-const createPost = (post) => {
+const createPost = (state, post) => {
   const container = document.createElement('div');
   const link = document.createElement('a');
   const button = document.createElement('button');
@@ -18,7 +18,7 @@ const createPost = (post) => {
   button.textContent = t('ui.preview');
 
   container.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'gap-2')
-  if (isPostViewed(post.id)) {
+  if (isPostViewed(state, post.id)) {
     link.classList.add('fw-normal', 'link-secondary') 
   } else {
     link.classList.add('fw-bold')
@@ -30,25 +30,23 @@ const createPost = (post) => {
 
   button.addEventListener('click', () => {
     setModal(post.title, post.description, post.link);
-    addViewedPost(post.id);
-    createPosts()
-  })
+    addViewedPost(state, post.id);
+  });
 
   link.addEventListener('click', () => {
-    addViewedPost(post.id);
-    createPosts()
-  })
+    addViewedPost(state, post.id);
+  });
 
   return container;
-}
+};
 
-export const createPosts = () => {
+export const createPosts = (state) => {
   const postsContainer = document.querySelector('#postsContainer');
 
   postsContainer.innerHTML = '';
 
-  getPosts().forEach((post) => {
-    const postElement = createPost(post);
+  state.data.posts.forEach((post) => {
+    const postElement = createPost(state, post);
     postsContainer.append(postElement);
   });
-}
+};

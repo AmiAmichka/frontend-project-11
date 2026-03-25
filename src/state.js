@@ -1,7 +1,7 @@
 const state = {
   form: {
     error: '',
-    isValid: false,
+    isValid: true,
   },
   data: {
     posts: [],
@@ -10,42 +10,36 @@ const state = {
   },
   UIstate: {
     modalOpen: false,
-    viewedPosts: new Set(), //или []
+    viewedPosts: [],
   },
   process: {
     info: '',
-    status: 'loading', // конкретно сейчас такой статус, еще может быть error, filling, success
+    status: 'filling',
   },
 };
 
 export const getState = () => state;
 
-export const getPosts = () => state.data.posts;
-
-export const addPosts = (posts) => {
+export const addPosts = (currentState, posts) => {
   posts.forEach((post) => {
-    if (!state.data.posts.find(({ id }) => post.id === id)) {
-      state.data.posts.push(post);
+    if (!currentState.data.posts.find(({ id }) => post.id === id)) {
+      currentState.data.posts.push(post);
     }
   });
 };
 
-export const getFeeds = () => state.data.feeds;
-
-export const addFeed = (feed) => {
-  state.data.feeds.push(feed);
+export const addFeed = (currentState, feed) => {
+  currentState.data.feeds.push(feed);
 };
 
-export const addLink = (link) => {
-  state.data.links.push(link);
+export const addLink = (currentState, link) => {
+  currentState.data.links.push(link);
 };
 
-export const getLinks = () => state.data.links;
+export const addViewedPost = (currentState, id) => {
+  if (!currentState.UIstate.viewedPosts.includes(id)) {
+    currentState.UIstate.viewedPosts.push(id);
+  }
+};
 
-export const getViewedPosts = () => state.UIstate.viewedPosts;
-
-export const addViewedPost = (id) => {
-  state.UIstate.viewedPosts.add(id);
-}
-
-export const isPostViewed = (postId) => state.UIstate.viewedPosts.has(postId)
+export const isPostViewed = (currentState, postId) => currentState.UIstate.viewedPosts.includes(postId);

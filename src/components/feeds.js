@@ -1,5 +1,3 @@
-import { getFeeds } from "../state.js"
-
 const createFeed = (feed) => {
   const container = document.createElement('div');
   const title = document.createElement('p');
@@ -18,12 +16,12 @@ const createFeed = (feed) => {
   return container
 }
 
-export const createFeeds = () => {
+export const createFeeds = (state) => {
   const feedsContainer = document.querySelector('#feedsContainer');
 
   feedsContainer.innerHTML = '';
 
-  getFeeds().forEach((feed) => {
+  state.data.feeds.forEach((feed) => {
     const feedElement = createFeed(feed);
     feedsContainer.append(feedElement);
   });

@@ -1,12 +1,9 @@
-import { getLinks } from '../state';
 import { updateFetch } from './fetch';
 
-export const autoUpdate = () => {
-  const links = getLinks();
-
-  links.forEach((link) => {
-    updateFetch(link);
+export const autoUpdate = (state) => {
+  state.data.links.forEach((link) => {
+    updateFetch(state, link).catch(() => {});
   });
 
-  setTimeout(autoUpdate, 5000);
+  setTimeout(() => autoUpdate(state), 5000);
 };

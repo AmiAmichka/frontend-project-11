@@ -1,34 +1,22 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
-import { createFormMessage } from './src/components/formMessage.js';
 import { autoUpdate } from './src/helper/autoUpdater.js';
 import { makeFetch } from './src/helper/fetch.js';
 import { urlSchema } from './src/helper/validator.js';
 import { t } from './src/i18n.js';
-import { getLinks } from './src/state.js';
+import { getState } from './src/state.js';
+import { initView } from './src/view.js';
 
+const state = getState();
+const watchedState = initView(state);
 const form = document.querySelector('.form');
-const input = form.querySelector('#url');
-const submitButton = form.querySelector('[type="submit"]');
-
-const setFormDisabled = (disabled) => {
-  input.disabled = disabled;
-  submitButton.disabled = disabled;
-};
-
-const showFormError = (message) => {
-  input.classList.add('is-invalid');
-  createFormMessage(message, 'error');
-};
-
-const resetFormState = () => {
-  input.classList.remove('is-invalid');
-  form.reset();
-  input.focus();
-};
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  watchedState.form.error = '';
+  watchedState.form.isValid = true;
+  watchedState.process.info = '';
+  watchedState.process.status = 'filling';
 
   const formData = new FormData(form);
   const formObject = Object.fromEntries(formData.entries());
@@ -36,21 +24,21 @@ form.addEventListener('submit', (event) => {
   urlSchema
     .validate(formObject)
     .then((formData) => {
-      if (getLinks().includes(formData.url)) {
+      if (watchedState.data.links.includes(formData.url)) {
         throw new Error('errors.alreadyExists');
       }
-      setFormDisabled(true);
+      watchedState.process.status = 'loading';
 
-      makeFetch(formData.url).then(() => {
-        resetFormState();
+      return makeFetch(watchedState, formData.url).then(() => {
+        watchedState.process.info = t('success.rssLoaded');
+        watchedState.process.status = 'success';
       });
     })
     .catch((error) => {
-      showFormError(t(error.message));
-    })
-    .finally(() => {
-      setFormDisabled(false);
+      watchedState.form.error = t(error.message);
+      watchedState.form.isValid = false;
+      watchedState.process.status = 'error';
     });
 });
 
-autoUpdate();
+autoUpdate(watchedState);

@@ -1,11 +1,15 @@
 const form = document.querySelector('.form');
 
-export const createFormMessage = (validatorResult, type = 'success') => {
+export const removeFormMessage = () => {
   const messageEl = document.querySelector('#message');
+
   if (messageEl) {
     messageEl.remove();
   }
+};
 
+export const createFormMessage = (validatorResult, type = 'success') => {
+  removeFormMessage();
   const message = document.createElement('p');
   const messageClass = type === 'error' ? 'text-danger' : 'text-success';
 
