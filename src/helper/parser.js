@@ -1,23 +1,38 @@
-//сюда взять парсер из индекс js
 export const parse = (data) => {
-  const parser = new DOMParser()
-  const domData = parser.parseFromString(data, 'application/xml')
+  const parser = new DOMParser();
+  const domData = parser.parseFromString(data, 'application/xml');
+
+  const parserError = domData.querySelector('parsererror');
+  const channel = domData.querySelector('channel');
+
+  const feedTitle = channel?.querySelector('title')?.textContent;
+  const feedDescription = channel?.querySelector('description')?.textContent;
+
+  if (parserError || !channel || !feedTitle || !feedDescription) {
+    throw new Error('errors.invalidRss');
+  }
 
   const feed = {
-    title: domData.querySelector('title')?.textContent,
-    description: domData.querySelector('description')?.textContent
-  }
-  const posts = []
+    title: feedTitle,
+    description: feedDescription,
+  };
 
-  domData.querySelectorAll('item').forEach((item) => {
-    const post = {
-      title: item.querySelector('title')?.textContent,
-      description: item.querySelector('description')?.textContent,
-      link: item.querySelector('link')?.textContent,
-      id: item.querySelector('link')?.textContent  //проверить уникальны ли ссылки, если не уникальны то есть библиотека uuid
+  const posts = Array.from(domData.querySelectorAll('item')).map((item) => {
+    const title = item.querySelector('title')?.textContent?.trim();
+    const description = item.querySelector('description')?.textContent?.trim() ?? '';
+    const link = item.querySelector('link')?.textContent?.trim();
+
+    if (!title || !link) {
+      throw new Error('errors.invalidRss');
     }
-    posts.push(post)
-  })
 
-  return { feed, posts }
-}
+    return {
+      title,
+      description,
+      link,
+      id: link,
+    };
+  });
+
+  return { feed, posts };
+};
