@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 import { createFormMessage } from './src/components/formMessage.js';
 import { autoUpdate } from './src/helper/autoUpdater.js';
 import { makeFetch } from './src/helper/fetch.js';
