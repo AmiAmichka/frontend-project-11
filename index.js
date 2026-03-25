@@ -3,42 +3,65 @@ import 'bootstrap';
 import { autoUpdate } from './src/helper/autoUpdater.js';
 import { makeFetch } from './src/helper/fetch.js';
 import { urlSchema } from './src/helper/validator.js';
-import { t } from './src/i18n.js';
+import { initI18n, t } from './src/i18n.js';
 import { getState } from './src/state.js';
 import { initView } from './src/view.js';
 
-const state = getState();
-const watchedState = initView(state);
-const form = document.querySelector('.form');
+const applyDefaultTranslations = () => {
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  watchedState.form.error = '';
-  watchedState.form.isValid = true;
-  watchedState.process.info = '';
-  watchedState.process.status = 'filling';
+  document.title = t('ui.pageTitle');
 
-  const formData = new FormData(form);
-  const formObject = Object.fromEntries(formData.entries());
+  document.querySelector('#pageTitle').textContent = t('ui.pageTitle');
+  document.querySelector('#pageDescription').textContent = t('ui.pageDescription');
+  document.querySelector('#url').setAttribute('placeholder', t('ui.rssPlaceholder'));
+  document.querySelector('#urlLabel').textContent = t('ui.rssPlaceholder');
+  document.querySelector('#submitButton').textContent = t('ui.addButton');
+  document.querySelector('#exampleText').textContent = t('ui.example');
+  document.querySelector('#postsTitle').textContent = t('ui.posts');
+  document.querySelector('#feedsTitle').textContent = t('ui.feeds');
+  document.querySelector('#postModalLink').textContent = t('ui.readFull');
+  document.querySelector('#modalCloseButton').textContent = t('ui.close');
 
-  urlSchema
-    .validate(formObject)
-    .then((formData) => {
-      if (watchedState.data.links.includes(formData.url)) {
-        throw new Error('errors.alreadyExists');
-      }
-      watchedState.process.status = 'loading';
+};
 
-      return makeFetch(watchedState, formData.url).then(() => {
-        watchedState.process.info = t('success.rssLoaded');
-        watchedState.process.status = 'success';
+const runApp = () => {
+  const state = getState();
+  const watchedState = initView(state);
+  const form = document.querySelector('.form');
+
+  applyDefaultTranslations();
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    watchedState.form.error = '';
+    watchedState.form.isValid = true;
+    watchedState.process.info = '';
+    watchedState.process.status = 'filling';
+
+    const formData = new FormData(form);
+    const formObject = Object.fromEntries(formData.entries());
+
+    urlSchema
+      .validate(formObject)
+      .then((formData) => {
+        if (watchedState.data.links.includes(formData.url)) {
+          throw new Error('errors.alreadyExists');
+        }
+        watchedState.process.status = 'loading';
+
+        return makeFetch(watchedState, formData.url).then(() => {
+          watchedState.process.info = t('success.rssLoaded');
+          watchedState.process.status = 'success';
+        });
+      })
+      .catch((error) => {
+        watchedState.form.error = t(error.message);
+        watchedState.form.isValid = false;
+        watchedState.process.status = 'error';
       });
-    })
-    .catch((error) => {
-      watchedState.form.error = t(error.message);
-      watchedState.form.isValid = false;
-      watchedState.process.status = 'error';
-    });
-});
+  });
 
-autoUpdate(watchedState);
+  autoUpdate(watchedState);
+};
+
+initI18n().then(runApp);
