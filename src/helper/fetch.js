@@ -25,12 +25,12 @@ export const makeFetch = (url) => {
       addPosts(posts);
       addLink(url);
 
-      createFormMessage('RSS успешно загружен');
+      createFormMessage('RSS успешно загружен', 'success');
       createPosts();
       createFeeds();
     })
     .catch((error) => {
-      createFormMessage(error.message);
+      createFormMessage(error.message, 'error');
     });
 };
 
