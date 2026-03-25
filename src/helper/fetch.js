@@ -9,7 +9,7 @@ const baseFetch = (url) => {
     `https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}&disableCache=true`,
   ).then((response) => {
     if (response.ok) return response.json();
-    throw new Error('Network response was not ok.');
+    throw new Error('Ошибка сети');
   });
 };
 
