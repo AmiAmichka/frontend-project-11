@@ -13,7 +13,7 @@ const renderForm = (state) => {
   input.disabled = isLoading;
   submitButton.disabled = isLoading;
 
-  if (state.process.status === 'success') {
+  if (state.process.status === 'success' && state.process.info) {
     input.classList.remove('is-invalid');
     form.reset();
     input.focus();

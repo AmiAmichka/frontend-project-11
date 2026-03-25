@@ -33,13 +33,14 @@ const runApp = () => {
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
+
+    const formData = new FormData(form);
+    const formObject = Object.fromEntries(formData.entries());
+
     watchedState.form.error = '';
     watchedState.form.isValid = true;
     watchedState.process.info = '';
     watchedState.process.status = 'filling';
-
-    const formData = new FormData(form);
-    const formObject = Object.fromEntries(formData.entries());
 
     urlSchema
       .validate(formObject)
