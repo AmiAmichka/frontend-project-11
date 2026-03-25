@@ -41,3 +41,11 @@ export const addLink = (link) => {
 };
 
 export const getLinks = () => state.data.links;
+
+export const getViewedPosts = () => state.UIstate.viewedPosts;
+
+export const addViewedPost = (id) => {
+  state.UIstate.viewedPosts.add(id);
+}
+
+export const isPostViewed = (postId) => state.UIstate.viewedPosts.has(postId)

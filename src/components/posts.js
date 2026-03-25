@@ -1,4 +1,4 @@
-import { getPosts } from "../state.js"
+import { addViewedPost, getPosts, isPostViewed } from "../state.js"
 import { setModal } from "./modal.js";
 
 // создаю посты через createElement, className/ setAttribute
@@ -13,17 +13,29 @@ const createPost = (post) => {
 
   link.textContent = post.title;
   link.setAttribute('href', post.link);
+  link.setAttribute('target', '_blank');
   button.textContent = 'Просмотр'
 
   container.classList.add('d-flex', 'justify-content-between', 'align-items-center', 'gap-2')
-  link.classList.add('fw-bold')
+  if (isPostViewed(post.id)) {
+    link.classList.add('fw-normal', 'link-secondary') 
+  } else {
+    link.classList.add('fw-bold')
+  }
   button.classList.add('btn', 'btn-outline-primary', 'btn-sm')
 
   button.dataset.bsToggle = 'modal';
   button.dataset.bsTarget = '#postModal';
 
   button.addEventListener('click', () => {
-    setModal(post.title, post.description, post.link)
+    setModal(post.title, post.description, post.link);
+    addViewedPost(post.id);
+    createPosts()
+  })
+
+  link.addEventListener('click', () => {
+    addViewedPost(post.id);
+    createPosts()
   })
 
   return container;
