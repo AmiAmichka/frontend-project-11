@@ -5,7 +5,12 @@ const baseFetch = (url) => {
   return fetch(
     `https://allorigins.hexlet.app/get?url=${encodeURIComponent(url)}&disableCache=true`,
   ).then((response) => {
-    if (response.ok) return response.json();
+    if (!response.ok) {
+      throw new Error('errors.network');
+    }
+
+    return response.json();
+  }).catch(() => {
     throw new Error('errors.network');
   });
 };
@@ -13,7 +18,7 @@ const baseFetch = (url) => {
 export const makeFetch = (state, url) => {
   return baseFetch(url)
     .then((data) => {
-      if (!data.status.content_type.includes('application/rss+xml')) {
+      if (!data.contents) {
         throw new Error('errors.invalidRss');
       }
 
