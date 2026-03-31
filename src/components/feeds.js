@@ -10,7 +10,7 @@ const createFeed = (feed) => {
   description.textContent = feed.description
 
   container.classList.add('d-flex', 'flex-column', 'gap-1')
-  title.classList.add('fw-medium', 'normal', 'm-0', 'lh-1')
+  title.classList.add('fw-medium', 'm-0', 'h6')
   description.classList.add('fw-normal', 'small', 'text-secondary', 'lh-1', 'mb-0')
 
   return container
