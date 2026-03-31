@@ -26,7 +26,7 @@ const createPost = (state, post) => {
   button.classList.add('btn', 'btn-outline-primary', 'btn-sm')
 
   button.dataset.bsToggle = 'modal';
-  button.dataset.bsTarget = '#postModal';
+  button.dataset.bsTarget = '#modal';
 
   button.addEventListener('click', () => {
     setModal(post.title, post.description, post.link);
