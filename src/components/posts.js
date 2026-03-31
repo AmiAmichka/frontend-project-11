@@ -5,7 +5,7 @@ import { setModal } from "./modal.js";
 // создаю посты через createElement, className/ setAttribute
 
 const createPost = (state, post) => {
-  const container = document.createElement('div');
+  const container = document.createElement('li');
   const link = document.createElement('a');
   const button = document.createElement('button');
 
