@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18next from 'i18next'
 
 const resources = {
   ru: {
@@ -27,9 +27,9 @@ const resources = {
       },
     },
   },
-};
+}
 
-const i18n = i18next.createInstance();
+const i18n = i18next.createInstance()
 
 export const initI18n = () => {
   return i18n.init({
@@ -37,8 +37,8 @@ export const initI18n = () => {
     fallbackLng: 'ru',
     debug: false,
     resources,
-  });
-};
+  })
+}
 
-export const t = i18n.t.bind(i18n);
-export default i18n;
+export const t = i18n.t.bind(i18n)
+export default i18n

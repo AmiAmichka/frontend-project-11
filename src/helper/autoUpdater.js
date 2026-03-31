@@ -1,9 +1,9 @@
-import { updateFetch } from './fetch';
+import { updateFetch } from './fetch'
 
 export const autoUpdate = (state) => {
   state.data.links.forEach((link) => {
-    updateFetch(state, link).catch(() => {});
-  });
+    updateFetch(state, link).catch(() => {})
+  })
 
-  setTimeout(() => autoUpdate(state), 5000);
-};
+  setTimeout(() => autoUpdate(state), 5000)
+}

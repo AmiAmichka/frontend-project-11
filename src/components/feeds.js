@@ -1,13 +1,13 @@
 const createFeed = (feed) => {
-  const container = document.createElement('div');
-  const title = document.createElement('h3');
-  const description = document.createElement('p');
+  const container = document.createElement('div')
+  const title = document.createElement('h3')
+  const description = document.createElement('p')
 
-  container.append(title);
-  container.append(description);
+  container.append(title)
+  container.append(description)
 
-  title.textContent = feed.title;
-  description.textContent = feed.description;
+  title.textContent = feed.title
+  description.textContent = feed.description
 
   container.classList.add('d-flex', 'flex-column', 'gap-1')
   title.classList.add('fw-medium', 'normal', 'm-0', 'lh-1')
@@ -17,12 +17,12 @@ const createFeed = (feed) => {
 }
 
 export const createFeeds = (state) => {
-  const feedsContainer = document.querySelector('#feedsContainer');
+  const feedsContainer = document.querySelector('#feedsContainer')
 
-  feedsContainer.innerHTML = '';
+  feedsContainer.innerHTML = ''
 
   state.data.feeds.forEach((feed) => {
-    const feedElement = createFeed(feed);
-    feedsContainer.append(feedElement);
-  });
+    const feedElement = createFeed(feed)
+    feedsContainer.append(feedElement)
+  })
 }
