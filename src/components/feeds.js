@@ -1,6 +1,6 @@
 const createFeed = (feed) => {
   const container = document.createElement('div');
-  const title = document.createElement('p');
+  const title = document.createElement('h3');
   const description = document.createElement('p');
 
   container.append(title);
