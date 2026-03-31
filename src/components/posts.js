@@ -21,7 +21,7 @@ const createPost = (state, post) => {
   if (isPostViewed(state, post.id)) {
     link.classList.add('fw-normal', 'link-secondary')
   }
- else {
+  else {
     link.classList.add('fw-bold')
   }
   button.classList.add('btn', 'btn-outline-primary', 'btn-sm')

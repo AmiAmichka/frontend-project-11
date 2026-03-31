@@ -20,6 +20,7 @@ export default defineConfig([
       '@stylistic/semi': ['error', 'never'],
       '@stylistic/eol-last': ['error', 'always'],
       '@stylistic/padded-blocks': ['error', 'never'],
+      '@stylistic/indent': ['error', 2]
     },
   },
 ])
